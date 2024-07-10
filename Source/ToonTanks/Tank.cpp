@@ -6,11 +6,14 @@
 #include "Camera/CameraComponent.h"
 #include "Components/InputComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "TimerManager.h"
 
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
 	TankPlayerController = Cast<APlayerController>(GetController());
+
+	//GetWorldTimerManager().SetTimer(FireRateTimerHandle, this, &ATank::Fire, FireRate, true,3.0f);
 }
 
 ATank::ATank()
@@ -20,6 +23,9 @@ ATank::ATank()
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
+
+	CurrentAmmo = MaxAmmo;
+	
 }
 
 
@@ -46,6 +52,19 @@ void ATank::Tick(float DeltaTime)
 		RotateTurret(HitResult.ImpactPoint);
 	}
 }
+
+void ATank::Fire()
+{
+	if (CurrentAmmo > 0 && bCanFire)
+	{
+		ABasePawn::Fire();
+		CurrentAmmo--;
+		bCanFire = false;
+
+		GetWorldTimerManager().SetTimer(FireCooldownTimerHandle, this, &ATank::EnableFiring, 1.0f, false);
+	}
+}
+
 void ATank::HandleDestruction()
 {
 	Super::HandleDestruction();
@@ -53,6 +72,7 @@ void ATank::HandleDestruction()
 	SetActorHiddenInGame(true);
 	SetActorTickEnabled(false);
 }
+
 void ATank::Move(float Value)
 {
 	FVector DeltaLocation = FVector::ZeroVector;
@@ -66,4 +86,8 @@ void ATank::Turn(float Value)
 	DeltaRotation.Yaw = Value * TurnRate * UGameplayStatics::GetWorldDeltaSeconds(this);
 	AddActorLocalRotation(DeltaRotation, true);
 
+}
+void ATank::EnableFiring()
+{
+	bCanFire = true;
 }

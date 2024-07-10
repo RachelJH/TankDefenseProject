@@ -22,8 +22,8 @@ protected:
 private:
 	class ATank* Tank;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Combat")
-	float FireRange = 3000.0f;
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	float FireRange = 2000.0f;
 
 	FTimerHandle FireRateTimerHandle;
 	float FireRate = 2.0f;

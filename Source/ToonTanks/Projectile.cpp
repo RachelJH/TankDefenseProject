@@ -16,8 +16,8 @@ AProjectile::AProjectile()
 	RootComponent = ProjectileMesh;
 
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement Component"));
-	ProjectileMovementComponent->MaxSpeed =2000.0f;
-	ProjectileMovementComponent->InitialSpeed = 2000.0f;
+	ProjectileMovementComponent->MaxSpeed =4000.0f;
+	ProjectileMovementComponent->InitialSpeed = 4000.0f;
 
 }
 
@@ -27,21 +27,36 @@ void AProjectile::BeginPlay()
 	Super::BeginPlay();
 	
 	ProjectileMesh->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
+
+	if (LaunchSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, LaunchSound, GetActorLocation());
+	}
 }
 
 void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	auto MyOwner = GetOwner();
-	if (MyOwner == nullptr) return; 
-	
+	if (MyOwner == nullptr) {
+		Destroy();
+		return;
+	}
 	auto MyOwnerInstigater = MyOwner->GetInstigatorController();
 	auto DamageTypeClass = UDamageType::StaticClass();
 
 	if (OtherActor && OtherActor != this && OtherActor != MyOwner)
 	{
 		UGameplayStatics::ApplyDamage(OtherActor, Damage, MyOwnerInstigater, this, DamageTypeClass);
-		Destroy();
+		if (HitParticles) 
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(this, HitParticles, GetActorLocation(), GetActorRotation(), (FVector)(2.0f));
+		}
+		if (HitSound)
+		{
+			UGameplayStatics::PlaySoundAtLocation(this, HitSound, GetActorLocation());
+		}
 	}
+	Destroy();
 }
 // Called every frame
 void AProjectile::Tick(float DeltaTime)

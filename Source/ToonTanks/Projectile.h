@@ -7,6 +7,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Projectile.generated.h"
 
+
 UCLASS()
 class TOONTANKS_API AProjectile : public AActor
 {
@@ -23,7 +24,7 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	UStaticMeshComponent* ProjectileMesh;
 
-	UPROPERTY(VisibleAnywhere, Category = "Movement")
+	UPROPERTY(EditAnywhere, Category = "Movement")
 	class UProjectileMovementComponent* ProjectileMovementComponent;
 
 	UFUNCTION()
@@ -31,6 +32,15 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	float Damage = 50.0f;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	class UParticleSystem* HitParticles;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	class USoundBase* LaunchSound;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	class USoundBase* HitSound;
 
 public:	
 	// Called every frame

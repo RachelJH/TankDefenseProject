@@ -16,9 +16,16 @@ public:
 	ABasePawn();
 
 	void HandleDestruction();
+	virtual void Fire();
+
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
+	class UParticleSystem* FireParticles;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	USceneComponent* ProjectileSpawnPoint;
+
 protected:
 	void RotateTurret(FVector LookAtTarget);
-	void Fire();
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	class UBoxComponent* BoxComp;
@@ -27,9 +34,13 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* TurretMesh;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
-	USceneComponent* ProjectileSpawnPoint;
-
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	TSubclassOf<class AProjectile> ProjectileClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
+	class UParticleSystem* DeathParticles;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
+	class USoundBase* DeathSound;
+
 };

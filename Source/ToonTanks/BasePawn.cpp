@@ -28,6 +28,13 @@ ABasePawn::ABasePawn()
 
 void ABasePawn::HandleDestruction()
 {
+	if (DeathParticles) {
+		UGameplayStatics::SpawnEmitterAtLocation(this, DeathParticles, GetActorLocation(), GetActorRotation(), (FVector)(5.0f));
+	}
+	if (DeathSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation());
+	}
 }
 
 void ABasePawn::Fire()
@@ -37,6 +44,10 @@ void ABasePawn::Fire()
 
 	auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileClass, Location, Rotation);
 	Projectile->SetOwner(this);
+
+	if (FireParticles) {
+		UGameplayStatics::SpawnEmitterAtLocation(this, FireParticles, Location, Rotation, (FVector)(0.5f));
+	}
 }
 
 void ABasePawn::RotateTurret(FVector LookAtTarget)

@@ -24,9 +24,29 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	
+	virtual void Fire() override;
+
 	void HandleDestruction();
 
+
 	APlayerController* GetTankPlayerController() const { return TankPlayerController; }
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
+	int32 MaxAmmo = 20;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
+	int32 CurrentAmmo = 0;
+
+
+	FTimerHandle FireRateTimerHandle;
+	float FireRate = 0.5f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
+	bool bCanFire;
+
+	FTimerHandle FireCooldownTimerHandle;
+
+	void EnableFiring();
 
 private:
 	UPROPERTY(VisibleAnyWhere, Category="Components")
