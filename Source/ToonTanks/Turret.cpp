@@ -16,6 +16,13 @@ void ATurret::Tick(float DeltaTime)
 
 }
 
+void ATurret::HandleDestruction()
+{
+	Super::HandleDestruction();
+	UE_LOG(LogTemp, Warning, TEXT("Turret Dead"));
+	Destroy();
+}
+
 void ATurret::BeginPlay()
 {
 	Super::BeginPlay();
