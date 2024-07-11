@@ -32,7 +32,7 @@ public:
 	APlayerController* GetTankPlayerController() const { return TankPlayerController; }
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
-	int32 MaxAmmo = 20;
+	int32 MaxAmmo = 100;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
 	int32 CurrentAmmo = 0;

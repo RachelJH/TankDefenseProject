@@ -6,6 +6,7 @@
 #include "Tank.h"
 #include "Turret.h"
 #include "TankPlayerController.h"
+
 void ATankGameModeBase::ActorDied(AActor* DeadActor)
 {
 	if (DeadActor == Tank)
@@ -23,10 +24,37 @@ void ATankGameModeBase::ActorDied(AActor* DeadActor)
 		--TargetTurrets;
 		if (TargetTurrets == 0)
 		{
-			GameOver(true);
+			if (TargetEnemys == 0)
+			{
+				GameOver(true);
+
+			}
+		}
+	}
+	else if (DeadActor)
+	{
+		--TargetEnemys;
+		UE_LOG(LogTemp, Warning, TEXT("%d"), TargetEnemys);
+		if (TargetTurrets == 0)
+		{
+			if (TargetEnemys == 0)
+			{
+				GameOver(true);
+
+			}
 		}
 	}
 }
+
+int32 ATankGameModeBase::GetTargetEnemyCount()
+{
+	TArray<AActor*> Enemys;
+	UGameplayStatics::GetAllActorsOfClass(this, Enemy, Enemys);
+	UE_LOG(LogTemp, Warning, TEXT("%d"), (int32)Enemys.Num());
+
+	return Enemys.Num();
+}
+
 
 void ATankGameModeBase::BeginPlay()
 {
@@ -39,6 +67,7 @@ void ATankGameModeBase::BeginPlay()
 void ATankGameModeBase::HandleGameStart()
 {
 	TargetTurrets = GetTargetTurretCount();
+	TargetEnemys = GetTargetEnemyCount();
 	Tank = Cast<ATank>(UGameplayStatics::GetPlayerPawn(this, 0));
 	TankPlayerController = Cast<ATankPlayerController>(UGameplayStatics::GetPlayerController(this, 0));
 

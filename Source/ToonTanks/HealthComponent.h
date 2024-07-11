@@ -15,17 +15,19 @@ class TOONTANKS_API UHealthComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UHealthComponent();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
+	float MaxHealth;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
 
+	float Health;
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 private:
-	UPROPERTY(EditAnywhere)
-	float MaxHealth = 100.0f;
-	float Health = 0.0f;
 
-	UFUNCTION()
+
+	UFUNCTION(BlueprintCallable)
 	void DamageTaken(AActor* DamagedActor, float Damage, const UDamageType* DamageType, class AController* Instigater, AActor* DamageCauser);
 
 	class ATankGameModeBase* TankGameModeBase;

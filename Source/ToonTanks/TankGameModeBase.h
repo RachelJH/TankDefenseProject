@@ -16,6 +16,16 @@ class TOONTANKS_API ATankGameModeBase : public AGameModeBase
 public:
 	void ActorDied(AActor* DeadActor);
 
+	//UFUNCTION(BlueprintImplementableEvent)
+	int32 GetTargetEnemyCount();
+
+	/*UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Enemy")
+	int32 EnemyCount;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Enemy")
+	bool DefinitionEnemy;*/
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Enemy")
+	int32 TargetEnemys = 0;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -24,9 +34,14 @@ protected:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void GameOver(bool bWonGame);
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AActor> Enemy;
 private:
 	class ATank* Tank;
 	class ATankPlayerController* TankPlayerController;
+
+	//class ACharater* Enemy;
 
 	float StartDelay = 3.0f;
 

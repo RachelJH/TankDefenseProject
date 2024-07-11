@@ -49,7 +49,7 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 		UGameplayStatics::ApplyDamage(OtherActor, Damage, MyOwnerInstigater, this, DamageTypeClass);
 		if (HitParticles) 
 		{
-			UGameplayStatics::SpawnEmitterAtLocation(this, HitParticles, GetActorLocation(), GetActorRotation(), (FVector)(2.0f));
+			UGameplayStatics::SpawnEmitterAtLocation(this, HitParticles, GetActorLocation(), GetActorRotation(), (FVector)(0.5f));
 		}
 		if (HitSound)
 		{
